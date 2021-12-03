@@ -24,7 +24,8 @@ function Sidebar() {
           variant="outline"
           border
           leftIcon={<UserIcon />}
-          className="text-lightblue hover:bg-lightdarkblue"
+          className="text-lightblue"
+          hoverColor="lightdarkblue"
         >
           Login
         </CollapsableButton>
@@ -32,7 +33,8 @@ function Sidebar() {
           variant="outline"
           border
           leftIcon={<LoginIcon />}
-          className="text-lightblue hover:bg-lightdarkblue"
+          className="text-lightblue"
+          hoverColor="lightdarkblue"
         >
           Register
         </CollapsableButton>

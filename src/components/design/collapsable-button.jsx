@@ -10,10 +10,14 @@ function CollapsableButton({
   breakpoint = 'sm',
   collapsed = false,
   className,
+  hoverColor,
   ...rest
 }) {
   return (
-    <button className={`flex items-center rounded p-1 ${className}`} {...rest}>
+    <button
+      className={`flex items-center rounded p-1 transition-colors hover:bg-${hoverColor} ${className}`}
+      {...rest}
+    >
       {leftIcon && (
         <Box w={iconSize} h={iconSize}>
           {leftIcon}
