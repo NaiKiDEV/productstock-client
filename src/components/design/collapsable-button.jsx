@@ -15,7 +15,7 @@ function CollapsableButton({
 }) {
   return (
     <button
-      className={`flex items-center rounded p-1 transition-colors hover:bg-${hoverColor} ${className}`}
+      className={`flex items-center rounded p-1 w-full transition-colors hover:bg-${hoverColor} ${className}`}
       {...rest}
     >
       {leftIcon && (
