@@ -3,11 +3,15 @@ import axios from 'axios';
 const urlBase = 'http://localhost:5000/api/';
 
 const getToken = () => {
-  return localStorage['token'];
+  return localStorage.getItem('token');
 };
 
 const setToken = (token) => {
-  localStorage['token'] = token;
+  localStorage.setItem('token', token);
+};
+
+const clearToken = () => {
+  localStorage.setItem('token', null);
 };
 
 const client = {
@@ -23,4 +27,11 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export { client, getToken, setToken };
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    throw new Error(error?.response?.data?.message || error.message);
+  }
+);
+
+export { client, getToken, setToken, clearToken };

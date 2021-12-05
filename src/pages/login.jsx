@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { client, setToken } from '../api';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { client, getToken, setToken } from '../api';
+import { authorize, selectAuth } from '../auth/state';
 import { CustomAlert, InputFeld } from '../components/design';
 
 const formView = {
@@ -8,25 +12,23 @@ const formView = {
 };
 
 function Login() {
-  const [formState, setFormState] = useState(formView);
+  const { isAuthenticated, authError } = useSelector(selectAuth);
 
-  const [authError, setAuthError] = useState('');
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const [formState, setFormState] = useState(formView);
 
   const updateFormValues = ({ target }) => {
     setFormState({ ...formState, [target.name]: target.value });
   };
 
-  const handleSignInSubmit = async () => {
-    try {
-      setAuthError('');
-      const { data } = await client.post('auth', formState);
-      setToken(data);
-    } catch (error) {
-      if (error.response.status === 401) {
-        setAuthError(error.response.data.message);
-      }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
     }
-  };
+  }, [isAuthenticated]);
 
   const emailError =
     (!formState.email ||
@@ -34,6 +36,8 @@ function Login() {
         /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       )) &&
     'Email is invalid';
+
+  const passwordError = !formState.password && 'Password must not be empty';
 
   return (
     <div className="bg-lightdarkblue h-full flex items-center justify-center">
@@ -63,12 +67,14 @@ function Login() {
             placeholder="Enter your password"
             onChange={(e) => updateFormValues(e)}
             value={formState.password}
+            error={passwordError}
           />
         </div>
         <button
-          type="button"
-          className="rounded bg-blue text-darkblue font-bold py-2 text-md transition-colors hover:bg-brightgreen disabled:bg-black"
-          onClick={handleSignInSubmit}
+          type="submit"
+          className="rounded bg-blue text-darkblue font-bold py-2 text-md transition-colors hover:bg-brightgreen disabled:bg-mutedgreen"
+          disabled={emailError || passwordError}
+          onClick={() => dispatch(authorize(formState))}
         >
           Sign in
         </button>

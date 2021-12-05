@@ -28,6 +28,7 @@ module.exports = {
   },
   variants: {
     extend: {},
+    backgroundColor: ({ after }) => after(['disabled']),
   },
   plugins: [],
 };
