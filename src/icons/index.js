@@ -4,3 +4,4 @@ export * from './user';
 export * from './home';
 export * from './logout';
 export * from './danger';
+export * from './success';

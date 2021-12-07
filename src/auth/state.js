@@ -12,21 +12,25 @@ const initialState = {
   role: null,
   expiresAt: '',
   authError: '',
+  authAvailable: false,
 };
 
-const authorize = createAsyncThunk(namespace('authorize'), async (payload) => {
-  const {
-    data: { jwtToken },
-  } = await client.post('auth', payload);
+const authorize = createAsyncThunk(
+  namespace('authorize'),
+  async ({ email, password }) => {
+    const {
+      data: { jwtToken },
+    } = await client.post('auth', { email, password });
 
-  if (!jwtToken) {
-    return Promise.reject();
+    if (!jwtToken) {
+      return Promise.reject();
+    }
+
+    setToken(jwtToken);
+
+    return decode(jwtToken);
   }
-
-  setToken(jwtToken);
-
-  return decode(jwtToken);
-});
+);
 
 const initAuth = createAsyncThunk(namespace('init'), async () => {
   const token = getToken();
@@ -52,6 +56,9 @@ export const authState = createSlice({
       clearToken();
       return { ...initialState };
     },
+    displayLoginAlert: (state) => {
+      return { ...state, authAvailable: true };
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -65,6 +72,7 @@ export const authState = createSlice({
             expiresAt: exp,
             isAuthenticated: true,
             authError: '',
+            authAvailable: false,
           };
         }
       )
@@ -73,6 +81,7 @@ export const authState = createSlice({
           ...initialState,
           isAuthenticated: false,
           authError: error.message,
+          authAvailable: false,
         };
       })
       .addCase(
@@ -93,4 +102,4 @@ const selectAuth = (state) => state.auth;
 
 export const authReducer = authState.reducer;
 export { authorize, initAuth, selectAuth };
-export const { logout } = authState.actions;
+export const { logout, displayLoginAlert } = authState.actions;

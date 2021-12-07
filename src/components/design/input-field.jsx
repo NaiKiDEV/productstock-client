@@ -9,6 +9,7 @@ function InputFeld({
   isInvalid,
   className,
   error,
+  required,
   ...rest
 }) {
   const isInputInvalid = error || isInvalid;
@@ -22,6 +23,9 @@ function InputFeld({
             className={'text-lg ' + labelClassName}
           >
             {label}
+            {required && (
+              <span className="text-bold text-brightgreen ml-1">*</span>
+            )}
           </label>
         )}
         {error && (
@@ -37,9 +41,9 @@ function InputFeld({
         autoComplete="off"
         className={`rounded px-3 py-1 outline-none bg-lightdarkblue text-lg text-lightblue border-b-2 transition-colors placeholder-lightblue placeholder-opacity-30 ${
           isInputInvalid ? 'border-red-500' : 'focus-within:border-blue'
-        } ${!!className & className}`}
+        } ${!!className && className}`}
         {...rest}
-      ></input>
+      />
     </div>
   );
 }
