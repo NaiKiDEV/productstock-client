@@ -23,13 +23,15 @@ function CollapsableButton({
           {leftIcon}
         </Box>
       )}
-      <div
-        className={`text-sm hidden ${
-          !collapsed && `${breakpoint}:flex whitespace-nowrap px-2`
-        }`}
-      >
-        {children}
-      </div>
+      {children && (
+        <div
+          className={`text-sm hidden ${
+            !collapsed && `${breakpoint}:flex whitespace-nowrap px-2`
+          }`}
+        >
+          {children}
+        </div>
+      )}
       {rightIcon && (
         <Box w={iconSize} h={iconSize}>
           {rightIcon}

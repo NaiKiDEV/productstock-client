@@ -4,14 +4,14 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { client } from '../api';
 import { displayLoginAlert, selectAuth } from '../auth';
-import { CustomAlert, InputFeld } from '../components/design';
+import { CustomAlert, InputField } from '../components/design';
 
 const formView = {
   name: '',
   surname: '',
   email: '',
   password: '',
-  passwordrepeat: '',
+  passwordRepeat: '',
 };
 
 function Register() {
@@ -40,8 +40,8 @@ function Register() {
 
   const passwordNotMatched =
     touchedState.password &&
-    touchedState.passwordrepeat &&
-    formState.password !== formState.passwordrepeat &&
+    touchedState.passwordRepeat &&
+    formState.password !== formState.passwordRepeat &&
     'Passwords do not match';
 
   const anyErrors =
@@ -91,7 +91,7 @@ function Register() {
         )}
 
         <div className="flex flex-col gap-3 pb-5">
-          <InputFeld
+          <InputField
             label="Name"
             name="name"
             type="text"
@@ -101,7 +101,7 @@ function Register() {
             error={nameEmpty}
             required
           />
-          <InputFeld
+          <InputField
             label="Surname"
             name="surname"
             type="text"
@@ -111,7 +111,7 @@ function Register() {
             error={surnameEmpty}
             required
           />
-          <InputFeld
+          <InputField
             label="Email"
             name="email"
             type="email"
@@ -121,7 +121,7 @@ function Register() {
             error={emailError}
             required
           />
-          <InputFeld
+          <InputField
             label="Password"
             name="password"
             type="password"
@@ -130,11 +130,11 @@ function Register() {
             placeholder="Enter your password"
             required
           />
-          <InputFeld
+          <InputField
             label="Repeat Password"
-            name="passwordrepeat"
+            name="passwordRepeat"
             type="password"
-            value={formState.passwordrepeat}
+            value={formState.passwordRepeat}
             onChange={(e) => updateFormValues(e)}
             placeholder="Repeat your password"
             error={passwordNotMatched}

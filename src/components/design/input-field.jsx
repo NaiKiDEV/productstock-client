@@ -1,7 +1,7 @@
 import React from 'react';
 import { DangerIcon, DangerIconInverted } from '../../icons';
 
-function InputFeld({
+function InputField({
   label,
   labelClassName,
   name,
@@ -48,4 +48,4 @@ function InputFeld({
   );
 }
 
-export { InputFeld };
+export { InputField };
