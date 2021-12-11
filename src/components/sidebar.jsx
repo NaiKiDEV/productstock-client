@@ -25,6 +25,15 @@ function Sidebar() {
             Home
           </CollapsableButton>
         </Link>
+        <Link to="/products">
+          <CollapsableButton
+            leftIcon={<HomeIcon />}
+            className="text-lightblue"
+            hoverColor="lightdarkblue"
+          >
+            Products
+          </CollapsableButton>
+        </Link>
       </div>
       <div className="flex flex-col gap-2">
         {!isAuthenticated ? (

@@ -18,9 +18,10 @@ const App = () => {
         <Sidebar />
         <PageWrapper>
           <Routes>
-            <Route path="/" element={<Products />} />
+            <Route path="/" element={<>Home /edit routes</>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/products" element={<Products />} />
           </Routes>
         </PageWrapper>
       </AppWrapper>

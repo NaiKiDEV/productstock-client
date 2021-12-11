@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { authorize, selectAuth } from '../auth/state';
-import { CustomAlert, InputFeld } from '../components/design';
+import { CustomAlert, InputField } from '../components/design';
 
 const formView = {
   email: '',
@@ -62,7 +62,7 @@ function Login() {
           <CustomAlert type="danger" message={authError} className="mb-2" />
         )}
         <div className="flex flex-col gap-3 pb-5">
-          <InputFeld
+          <InputField
             label="Email"
             name="email"
             type="email"
@@ -71,7 +71,7 @@ function Login() {
             value={formState.email}
             error={emailError}
           />
-          <InputFeld
+          <InputField
             label="Password"
             name="password"
             type="password"

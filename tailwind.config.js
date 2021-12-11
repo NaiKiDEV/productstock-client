@@ -8,6 +8,7 @@ module.exports = {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
+      xxl: '1480px',
     },
     extend: {
       colors: {
@@ -22,6 +23,7 @@ module.exports = {
         mutedgreen: '#3a9e8d',
         darkblue: '#2D3750',
         lightdarkblue: '#384967',
+        lighterdarkblue: '#374362',
         lightblue: '#A2B2C8',
       },
     },
