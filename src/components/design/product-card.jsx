@@ -41,16 +41,15 @@ function ProductCard({ aggregatedProduct: product }) {
       <div className="bg-darkblue rounded col-span-6 md:col-span-4 xl:col-span-3 xxl:col-span-2 text-lightblue p-3 flex flex-col shadow-md">
         <div className="h-36 bg-white rounded shadow">
           <img
-            className="h-full w-full object-cover rounded"
+            className="h-full w-full object-contain rounded"
             src={product?.imageUrl}
           />
         </div>
         <div className="flex flex-col flex-grow">
           <div className="text-md text- pt-2 flex-grow">{product.name}</div>
           <div className="border-lightdarkblue border-b my-2" />
-          <div className="pb-1 text- text-sm">Warehouse deals:</div>
           <div className="flex flex-col gap-1">{getSellerComponent()}</div>
-          <div className="flex items-center justify-between pt-3">
+          <div className="flex items-center justify-between pt-2">
             <div className="text-xs rounded bg-blue text-darkblue font-bold px-2 py-1 shadow-sm">
               {product.category.name}
             </div>

@@ -11,32 +11,35 @@ const initialState = {
   products: null,
 };
 
-const getAllProducts = createAsyncThunk(namespace('getAll'), async () => {
-  const { data } = await client.get('products');
+const getAllProducts = createAsyncThunk(
+  namespace('getAllProducts'),
+  async () => {
+    const { data } = await client.get('products');
 
-  const grouped = Object.values(groupBy(data, 'universalCode')).map((x) => {
-    const mappedProducts = x
-      ?.map((prod) => {
-        return {
-          id: prod.id,
-          quantity: prod.quantity,
-          price: prod.price,
-          fullName: `${prod.user?.name} ${prod?.user.surname}`,
-        };
-      })
-      .sort((left, right) => (left.price > right.price ? 1 : -1));
+    const grouped = Object.values(groupBy(data, 'universalCode')).map((x) => {
+      const mappedProducts = x
+        ?.map((prod) => {
+          return {
+            id: prod.id,
+            quantity: prod.quantity,
+            price: prod.price,
+            fullName: `${prod.user?.name} ${prod?.user.surname}`,
+          };
+        })
+        .sort((left, right) => (left.price > right.price ? 1 : -1));
 
-    return {
-      name: x[0].name,
-      imageUrl: x[0].imageUrl,
-      universalCode: x[0].universalCode,
-      category: x[0].category,
-      sellers: mappedProducts,
-    };
-  });
+      return {
+        name: x[0].name,
+        imageUrl: x[0].imageUrl,
+        universalCode: x[0].universalCode,
+        category: x[0].category,
+        sellers: mappedProducts,
+      };
+    });
 
-  return grouped;
-});
+    return grouped;
+  }
+);
 
 export const productState = createSlice({
   name,

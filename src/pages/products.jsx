@@ -16,11 +16,13 @@ function Products() {
   console.log(products);
 
   return (
-    <div className="bg-lightdarkblue h-full px-4 overflow-y-auto flex flex-col">
+    <div className="bg-lightdarkblue h-full p-2 overflow-y-auto flex flex-col">
       {products ? (
         <>
-          <div className="py-4 text-white">Drop down select</div>
-          <div className="grid grid-cols-12 gap-4 w-full">
+          <div className="px-4 py-1 text-lightblue rounded bg-darkblue">
+            Filtering options:
+          </div>
+          <div className="grid grid-cols-12 gap-2 w-full py-2">
             {products?.map((product) => (
               <ProductCard key={product.id} aggregatedProduct={product} />
             ))}
