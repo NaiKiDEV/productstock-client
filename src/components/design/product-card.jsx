@@ -1,7 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { selectAuth } from '../../auth';
 
 const SellerComponent = ({ seller: { fullName, quantity, price, id } }) => {
+  const { role } = useSelector(selectAuth);
+
   return (
     <Link
       to={(id && `/products/${id}`) || '/products'}
@@ -38,7 +42,7 @@ function ProductCard({ aggregatedProduct: product }) {
 
   return (
     product && (
-      <div className="bg-darkblue rounded col-span-6 md:col-span-4 xl:col-span-3 xxl:col-span-2 text-lightblue p-3 flex flex-col shadow-md">
+      <div className="bg-darkblue rounded col-span-6 md:col-span-4 xl:col-span-3 xxl:col-span-2 text-lightblue p-2 flex flex-col shadow-md">
         <div className="h-36 bg-white rounded shadow">
           <img
             className="h-full w-full object-contain rounded"
@@ -46,8 +50,10 @@ function ProductCard({ aggregatedProduct: product }) {
           />
         </div>
         <div className="flex flex-col flex-grow">
-          <div className="text-md text- pt-2 flex-grow">{product.name}</div>
-          <div className="border-lightdarkblue border-b my-2" />
+          <div className="text-md pt-2 flex-grow leading-tight">
+            {product.name}
+          </div>
+          <div className="border-lightdarkblue border-b mt-1 mb-2" />
           <div className="flex flex-col gap-1">{getSellerComponent()}</div>
           <div className="flex items-center justify-between pt-2">
             <div className="text-xs rounded bg-blue text-darkblue font-bold px-2 py-1 shadow-sm">

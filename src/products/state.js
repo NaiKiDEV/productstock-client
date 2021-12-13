@@ -9,6 +9,8 @@ const namespace = (action) => `${name}/${action}`;
 
 const initialState = {
   products: null,
+  categories: null,
+  users: null,
 };
 
 const getAllProducts = createAsyncThunk(
@@ -41,21 +43,79 @@ const getAllProducts = createAsyncThunk(
   }
 );
 
+const getAllCategories = createAsyncThunk(
+  namespace('getAllCategories'),
+  async () => {
+    const { data } = await client.get('categories');
+
+    return data;
+  }
+);
+
+const getAllUsers = createAsyncThunk(namespace('getAllUsers'), async () => {
+  const { data } = await client.get('users');
+
+  return data;
+});
+
 export const productState = createSlice({
   name,
   initialState,
   reducers: {},
   extraReducers: (builder) =>
-    builder.addCase(getAllProducts.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        products: payload,
-      };
-    }),
+    builder
+      .addCase(getAllProducts.fulfilled, (state, { payload }) => {
+        return {
+          ...state,
+          products: payload,
+        };
+      })
+      .addCase(getAllUsers.fulfilled, (state, { payload }) => {
+        return {
+          ...state,
+          users: payload,
+        };
+      })
+      .addCase(getAllCategories.fulfilled, (state, { payload }) => {
+        return {
+          ...state,
+          categories: payload,
+        };
+      })
+
+      .addCase(getAllProducts.pending, (state, { payload }) => {
+        return {
+          ...state,
+          products: null,
+        };
+      })
+      .addCase(getAllCategories.pending, (state, { payload }) => {
+        return {
+          ...state,
+          categories: null,
+        };
+      })
+      .addCase(getAllUsers.pending, (state, { payload }) => {
+        return {
+          ...state,
+          users: null,
+        };
+      }),
 });
 
 const selectProducts = (state) => state.products.products;
+const selectCategories = (state) => state.products.categories;
+const selectUsers = (state) => state.products.users;
+const selectEntireState = (state) => state.products;
 
 export const productReducer = productState.reducer;
-export { getAllProducts, selectProducts };
+export {
+  getAllProducts,
+  selectProducts,
+  selectCategories,
+  getAllCategories,
+  getAllUsers,
+  selectUsers,
+  selectEntireState,
+};
 export const {} = productState.actions;

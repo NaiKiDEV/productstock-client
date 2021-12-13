@@ -5,7 +5,14 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setToken } from '../api';
 import { logout, selectAuth } from '../auth';
-import { HomeIcon, LoginIcon, LogoIcon, UserIcon } from '../icons';
+import {
+  EditIcon,
+  HomeIcon,
+  LoginIcon,
+  LogoIcon,
+  PlusIcon,
+  UserIcon,
+} from '../icons';
 import { CollapsableButton } from './design';
 
 function Sidebar() {
@@ -13,8 +20,10 @@ function Sidebar() {
 
   const { isAuthenticated, email, role } = useSelector(selectAuth);
 
+  console.log(role);
+
   return (
-    <div className="h-full bg-darkblue p-2 flex flex-col justify-between">
+    <div className="h-full bg-darkblue p-2 flex flex-col justify-between border-r border-lighterdarkblue">
       <div className="flex flex-col gap-2">
         <Link to="/">
           <CollapsableButton
@@ -27,13 +36,53 @@ function Sidebar() {
         </Link>
         <Link to="/products">
           <CollapsableButton
-            leftIcon={<HomeIcon />}
+            leftIcon={<LogoIcon />}
             className="text-lightblue"
             hoverColor="lightdarkblue"
           >
             Products
           </CollapsableButton>
         </Link>
+        {(role === 'Admin' || role === 'Warehouse') && (
+          <>
+            <Link to="/categories">
+              <CollapsableButton
+                leftIcon={<EditIcon />}
+                className="text-lightblue"
+                hoverColor="lightdarkblue"
+              >
+                Edit Categories
+              </CollapsableButton>
+            </Link>
+            <Link to="/products/add">
+              <CollapsableButton
+                leftIcon={<PlusIcon />}
+                className="text-mutedgreen"
+                hoverColor="lightdarkblue"
+              >
+                Add a Product
+              </CollapsableButton>
+            </Link>
+            <Link to="/categories/add">
+              <CollapsableButton
+                leftIcon={<PlusIcon className="text-blue" />}
+                className="text-blue"
+                hoverColor="lightdarkblue"
+              >
+                Add a Category
+              </CollapsableButton>
+            </Link>
+            <Link to="/users">
+              <CollapsableButton
+                leftIcon={<UserIcon />}
+                className="text-lightblue"
+                hoverColor="lightdarkblue"
+              >
+                Manage Users
+              </CollapsableButton>
+            </Link>
+          </>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         {!isAuthenticated ? (
@@ -72,8 +121,8 @@ function Sidebar() {
               <div className="text-sm text-blue w-24 truncate">{role}</div>
             </div>
             <CollapsableButton
-              leftIcon={<LoginIcon className="text-red-500" />}
-              className="text-lightblue"
+              leftIcon={<LoginIcon />}
+              className="text-red-500"
               hoverColor="lightdarkblue"
               onClick={() => dispatch(logout())}
             >
