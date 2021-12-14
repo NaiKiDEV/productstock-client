@@ -11,6 +11,7 @@ const initialState = {
   products: null,
   categories: null,
   users: null,
+  productView: null,
 };
 
 const getAllProducts = createAsyncThunk(
@@ -58,6 +59,15 @@ const getAllUsers = createAsyncThunk(namespace('getAllUsers'), async () => {
   return data;
 });
 
+const getSingleProduct = createAsyncThunk(
+  namespace('getSingleProduct'),
+  async (id) => {
+    const { data } = await client.get(`products/${id}`);
+
+    return data;
+  }
+);
+
 export const productState = createSlice({
   name,
   initialState,
@@ -82,23 +92,34 @@ export const productState = createSlice({
           categories: payload,
         };
       })
-
-      .addCase(getAllProducts.pending, (state, { payload }) => {
+      .addCase(getSingleProduct.fulfilled, (state, { payload }) => {
+        return {
+          ...state,
+          productView: payload,
+        };
+      })
+      .addCase(getAllProducts.pending, (state) => {
         return {
           ...state,
           products: null,
         };
       })
-      .addCase(getAllCategories.pending, (state, { payload }) => {
+      .addCase(getAllCategories.pending, (state) => {
         return {
           ...state,
           categories: null,
         };
       })
-      .addCase(getAllUsers.pending, (state, { payload }) => {
+      .addCase(getAllUsers.pending, (state) => {
         return {
           ...state,
           users: null,
+        };
+      })
+      .addCase(getSingleProduct.pending, (state) => {
+        return {
+          ...state,
+          productView: null,
         };
       }),
 });
@@ -107,15 +128,18 @@ const selectProducts = (state) => state.products.products;
 const selectCategories = (state) => state.products.categories;
 const selectUsers = (state) => state.products.users;
 const selectEntireState = (state) => state.products;
+const selectProductView = (state) => state.products.productView;
 
 export const productReducer = productState.reducer;
 export {
   getAllProducts,
-  selectProducts,
-  selectCategories,
   getAllCategories,
   getAllUsers,
+  getSingleProduct,
+  selectProducts,
+  selectCategories,
   selectUsers,
   selectEntireState,
+  selectProductView,
 };
 export const {} = productState.actions;

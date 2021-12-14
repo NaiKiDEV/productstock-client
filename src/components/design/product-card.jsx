@@ -1,19 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { selectAuth } from '../../auth';
 
-const SellerComponent = ({ seller: { fullName, quantity, price, id } }) => {
-  const { role } = useSelector(selectAuth);
-
+const SellerComponent = ({
+  seller: { fullName, quantity, price },
+  onClick,
+}) => {
   return (
-    <Link
-      to={(id && `/products/${id}`) || '/products'}
-      className="flex py-1 px-2 h-8 bg-lightdarkblue rounded text-sm shadow transition-colors hover:bg-lighterdarkblue"
+    <div
+      className="flex py-1 px-2 h-8 bg-lightdarkblue rounded text-sm shadow transition-colors hover:bg-lighterdarkblue cursor-pointer"
+      onClick={() => onClick?.()}
     >
       {fullName && quantity && price ? (
         <>
-          <div className="truncate flex-shrink flex items-center text-sm">
+          <div className="truncate flex-shrink self-center text-sm">
             {fullName}
           </div>
           <div className="flex-grow text-blue whitespace-nowrap text-sm flex leading-none justify-end items-center">
@@ -25,11 +23,11 @@ const SellerComponent = ({ seller: { fullName, quantity, price, id } }) => {
           Listing not available...
         </div>
       )}
-    </Link>
+    </div>
   );
 };
 
-function ProductCard({ aggregatedProduct: product }) {
+function ProductCard({ aggregatedProduct: product, onOpenProduct }) {
   function getSellerComponent() {
     const sellers = product?.sellers?.slice(0, 3);
     for (let i = 0; i < 3; i++) {
@@ -37,7 +35,13 @@ function ProductCard({ aggregatedProduct: product }) {
         sellers.push({});
       }
     }
-    return sellers.map((x) => <SellerComponent key={x.fullName} seller={x} />);
+    return sellers.map((x, index) => (
+      <SellerComponent
+        key={x.fullName || index}
+        seller={x}
+        onClick={() => x.id && onOpenProduct?.(x.id)}
+      />
+    ));
   }
 
   return (

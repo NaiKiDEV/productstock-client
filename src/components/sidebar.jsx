@@ -1,15 +1,13 @@
-import { Box, Text } from '@chakra-ui/layout';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { setToken } from '../api';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { logout, selectAuth } from '../auth';
 import {
   EditIcon,
   HomeIcon,
   LoginIcon,
   LogoIcon,
+  LogoutIcon,
   PlusIcon,
   UserIcon,
 } from '../icons';
@@ -19,21 +17,11 @@ function Sidebar() {
   const dispatch = useDispatch();
 
   const { isAuthenticated, email, role } = useSelector(selectAuth);
-
-  console.log(role);
+  const navigate = useNavigate();
 
   return (
-    <div className="h-full bg-darkblue p-2 flex flex-col justify-between border-r border-lighterdarkblue">
+    <nav className="h-full bg-darkblue p-2 flex flex-col justify-between border-r border-lighterdarkblue">
       <div className="flex flex-col gap-2">
-        <Link to="/">
-          <CollapsableButton
-            leftIcon={<HomeIcon />}
-            className="text-lightblue"
-            hoverColor="lightdarkblue"
-          >
-            Home
-          </CollapsableButton>
-        </Link>
         <Link to="/products">
           <CollapsableButton
             leftIcon={<LogoIcon />}
@@ -44,25 +32,18 @@ function Sidebar() {
           </CollapsableButton>
         </Link>
         {(role === 'Admin' || role === 'Warehouse') && (
+          <Link to="/products/add">
+            <CollapsableButton
+              leftIcon={<PlusIcon />}
+              className="text-mutedgreen"
+              hoverColor="lightdarkblue"
+            >
+              Add a Product
+            </CollapsableButton>
+          </Link>
+        )}
+        {role === 'Admin' && (
           <>
-            <Link to="/categories">
-              <CollapsableButton
-                leftIcon={<EditIcon />}
-                className="text-lightblue"
-                hoverColor="lightdarkblue"
-              >
-                Edit Categories
-              </CollapsableButton>
-            </Link>
-            <Link to="/products/add">
-              <CollapsableButton
-                leftIcon={<PlusIcon />}
-                className="text-mutedgreen"
-                hoverColor="lightdarkblue"
-              >
-                Add a Product
-              </CollapsableButton>
-            </Link>
             <Link to="/categories/add">
               <CollapsableButton
                 leftIcon={<PlusIcon className="text-blue" />}
@@ -70,6 +51,15 @@ function Sidebar() {
                 hoverColor="lightdarkblue"
               >
                 Add a Category
+              </CollapsableButton>
+            </Link>
+            <Link to="/categories">
+              <CollapsableButton
+                leftIcon={<EditIcon />}
+                className="text-lightblue"
+                hoverColor="lightdarkblue"
+              >
+                Edit Categories
               </CollapsableButton>
             </Link>
             <Link to="/users">
@@ -89,7 +79,7 @@ function Sidebar() {
           <>
             <Link to="/register">
               <CollapsableButton
-                leftIcon={<LoginIcon />}
+                leftIcon={<UserIcon />}
                 className="text-lightblue"
                 hoverColor="lightdarkblue"
               >
@@ -98,7 +88,7 @@ function Sidebar() {
             </Link>
             <Link to="/login">
               <CollapsableButton
-                leftIcon={<UserIcon />}
+                leftIcon={<LoginIcon />}
                 className="text-lightblue"
                 hoverColor="lightdarkblue"
               >
@@ -121,17 +111,20 @@ function Sidebar() {
               <div className="text-sm text-blue w-24 truncate">{role}</div>
             </div>
             <CollapsableButton
-              leftIcon={<LoginIcon />}
+              leftIcon={<LogoutIcon />}
               className="text-red-500"
               hoverColor="lightdarkblue"
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(logout());
+                navigate('/');
+              }}
             >
               Logout
             </CollapsableButton>
           </>
         )}
       </div>
-    </div>
+    </nav>
   );
 }
 

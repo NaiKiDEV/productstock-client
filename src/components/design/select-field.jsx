@@ -55,7 +55,7 @@ function SelectField({
       </div>
       <select
         name={name}
-        value={value}
+        value={value || ''}
         className={`rounded px-2 py-1 outline-none appearance-none bg-lightdarkblue text-${textSize} text-lightblue border-b-2 transition-colors placeholder-lightblue placeholder-opacity-30 ${
           isInputInvalid ? 'border-red-500' : 'focus-within:border-blue'
         } ${!!className && className}`}

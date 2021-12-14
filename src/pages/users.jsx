@@ -3,19 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { client } from '../api';
-import { CustomAlert, InputField, SelectField } from '../components';
+import { CustomAlert, Dialog, InputField, SelectField } from '../components';
+import { RoleEnum, Roles } from '../constants';
 import { CloseIcon, EditIcon, TrashIcon } from '../icons';
 import { getAllUsers, selectUsers } from '../products/state';
 
 const formView = {
   id: 0,
+  name: '',
+  surname: '',
+  email: '',
+  role: RoleEnum.Basic,
 };
-
-const Roles = [
-  { id: 'Admin', name: 'Administrator' },
-  { id: 'Warehouse', name: 'Warehouse' },
-  { id: 'Basic', name: 'Basic' },
-];
 
 function Users() {
   const dispatch = useDispatch();
@@ -59,7 +58,6 @@ function Users() {
     }
   };
 
-  console.log(isModalOpen);
   return (
     <div className="bg-lightdarkblue h-full relative">
       {users ? (
@@ -123,74 +121,69 @@ function Users() {
           <Spinner thickness="4px" size="xl" className="text-brightgreen" />
         </div>
       )}
-      <div
-        className={`absolute top-0 h-full w-full ${!isModalOpen && 'hidden'}`}
-      >
-        <div className="h-full w-full relative">
-          <div className="bg-lighterdarkblue opacity-40 h-full w-full"></div>
-          <div className="absolute top-0 left-0 flex justify-center items-center h-full w-full">
-            <div className="w-96 bg-darkblue rounded text-lightblue p-4">
-              <div className="flex justify-between">
-                <div className="text-lg">Update useregory</div>
-                <div className="hover:bg-lightdarkblue rounded p-1 cursor-pointer">
-                  <CloseIcon
-                    className="w-5 h-5"
-                    onClick={() => setIsModalOpen(false)}
-                  />
-                </div>
-              </div>
-              {error && (
-                <CustomAlert type="danger" message={error} className="mb-2" />
-              )}
-              <div className="border-b border-lightdarkblue my-2" />
-              <div className="flex flex-col gap-2">
-                <InputField
-                  label="Name"
-                  name="name"
-                  type="text"
-                  placeholder="Enter name"
-                  labelClassName="text-md"
-                  required
-                  onChange={(e) => updateFormValues(e)}
-                  value={formState.name}
-                />
-                <InputField
-                  label="Surname"
-                  name="surname"
-                  type="text"
-                  labelClassName="text-md"
-                  placeholder="Enter surname"
-                  onChange={(e) => updateFormValues(e)}
-                  value={formState.surname}
-                />
-                <InputField
-                  label="Email"
-                  name="email"
-                  type="text"
-                  labelClassName="text-md"
-                  placeholder="Enter email"
-                  onChange={(e) => updateFormValues(e)}
-                  value={formState.email}
-                />
-                <SelectField
-                  label="Role"
-                  name="role"
-                  options={Roles}
-                  onChange={(e) => updateFormValues(e)}
-                  value={formState.role}
-                />
-                <button
-                  type="submit"
-                  className="rounded bg-blue text-darkblue font-bold py-2 mt-2 text-md transition-colors hover:bg-brightgreen disabled:bg-mutedgreen"
-                  onClick={handleSubmit}
-                >
-                  Save
-                </button>
-              </div>
+      <Dialog isOpen={isModalOpen}>
+        <div className="w-96 bg-darkblue rounded text-lightblue p-4">
+          <div className="flex justify-between">
+            <div className="text-lg">Update user</div>
+            <div className="hover:bg-lightdarkblue rounded p-1 cursor-pointer">
+              <CloseIcon
+                className="w-5 h-5"
+                onClick={() => setIsModalOpen(false)}
+              />
             </div>
           </div>
+          {error && (
+            <CustomAlert type="danger" message={error} className="mb-2" />
+          )}
+          <div className="border-b border-lightdarkblue my-2" />
+          <div className="flex flex-col gap-2">
+            <InputField
+              label="Name"
+              name="name"
+              type="text"
+              placeholder="Enter name"
+              labelClassName="text-md"
+              required
+              onChange={(e) => updateFormValues(e)}
+              value={formState.name}
+            />
+            <InputField
+              label="Surname"
+              name="surname"
+              type="text"
+              labelClassName="text-md"
+              placeholder="Enter surname"
+              onChange={(e) => updateFormValues(e)}
+              value={formState.surname}
+            />
+            <InputField
+              label="Email"
+              name="email"
+              type="text"
+              labelClassName="text-md"
+              placeholder="Enter email"
+              onChange={(e) => updateFormValues(e)}
+              value={formState.email}
+            />
+            <SelectField
+              label="Role"
+              name="role"
+              labelClassName="text-md"
+              className="pl-3"
+              options={Roles}
+              onChange={(e) => updateFormValues(e)}
+              value={formState.role}
+            />
+            <button
+              type="submit"
+              className="rounded bg-blue text-darkblue font-bold py-2 mt-2 text-md transition-colors hover:bg-brightgreen disabled:bg-mutedgreen"
+              onClick={handleSubmit}
+            >
+              Save
+            </button>
+          </div>
         </div>
-      </div>
+      </Dialog>
     </div>
   );
 }
